@@ -562,7 +562,7 @@ add_custom_target(ci_test_diagnostic_positions
     -S${PROJECT_SOURCE_DIR} -B${PROJECT_BINARY_DIR}/build_diagnostics_positions
     COMMAND ${CMAKE_COMMAND} --build ${PROJECT_BINARY_DIR}/build_diagnostics_positions
     COMMAND cd ${PROJECT_BINARY_DIR}/build_diagnostics_positions && ${CMAKE_CTEST_COMMAND} --parallel ${N} --output-on-failure
-    COMMENT "Compile and test with improved diagnostics positions enabled"
+    COMMENT "Compile and test with diagnostics positions enabled"
 )
 
 ###############################################################################
