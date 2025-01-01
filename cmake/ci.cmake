@@ -552,10 +552,10 @@ add_custom_target(ci_test_diagnostics
 )
 
 ###############################################################################
-# Enable improved diagnostics with positions.
+# Enable diagnostic positions support.
 ###############################################################################
 
-add_custom_target(ci_test_diagnostics_positions
+add_custom_target(ci_test_diagnostic_positions
     COMMAND ${CMAKE_COMMAND}
     -DCMAKE_BUILD_TYPE=Debug -GNinja
     -DJSON_BuildTests=ON -DJSON_Diagnostics=ON -DJSON_Diagnostic_Positions=ON
