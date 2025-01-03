@@ -558,7 +558,7 @@ add_custom_target(ci_test_diagnostics
 add_custom_target(ci_test_diagnostic_positions
     COMMAND ${CMAKE_COMMAND}
     -DCMAKE_BUILD_TYPE=Debug -GNinja
-    -DJSON_BuildTests=ON -DJSON_Diagnostics=ON -DJSON_Diagnostic_Positions=ON
+    -DJSON_BuildTests=ON -DJSON_Diagnostic_Positions=ON
     -S${PROJECT_SOURCE_DIR} -B${PROJECT_BINARY_DIR}/build_diagnostic_positions
     COMMAND ${CMAKE_COMMAND} --build ${PROJECT_BINARY_DIR}/build_diagnostic_positions
     COMMAND cd ${PROJECT_BINARY_DIR}/build_diagnostic_positions && ${CMAKE_CTEST_COMMAND} --parallel ${N} --output-on-failure
