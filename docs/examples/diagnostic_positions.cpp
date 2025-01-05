@@ -5,6 +5,30 @@
 
 using json = nlohmann::json;
 
+/* Demonstration of type error exception with diagnostic postions support enabled */
+void type_error_exception()
+{
+    //Invalid json string - housenumber type must be int instead of string
+    std::string json_invalid_string = R"(
+    {
+        "address": {
+            "street": "Fake Street",
+            "housenumber": "1"
+        }
+    }
+    )";
+    json j = json::parse(json_invalid_string);
+    try
+    {
+        int housenumber = j["address"]["housenumber"];
+    }
+    catch (const json::exception& e)
+    {
+        std::cout << e.what() << '\n';
+    }
+
+}
+
 int main()
 {
     std::string json_string = R"(
@@ -48,4 +72,7 @@ int main()
     std::cout << "1" << "\n";
     std::cout << "Parsed string: \n";
     std::cout << json_string.substr(j["address"]["housenumber"].start_pos(), j["address"]["housenumber"].end_pos() - j["address"]["housenumber"].start_pos()) << "\n\n";
+
+    type_error_exception();
+
 }

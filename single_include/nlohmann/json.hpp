@@ -4510,7 +4510,6 @@ class exception : public std::exception
                     }
                     break;
                 }
-
                 case value_t::null: // LCOV_EXCL_LINE
                 case value_t::string: // LCOV_EXCL_LINE
                 case value_t::boolean: // LCOV_EXCL_LINE
@@ -4534,6 +4533,12 @@ class exception : public std::exception
         {
             return concat(a, '/', detail::escape(b));
         });
+#if JSON_DIAGNOSTIC_POSITIONS
+        str += ", byte " + std::to_string(leaf_element->start_pos()) + "-" + std::to_string(leaf_element->end_pos());
+#endif
+        return concat('(', str, ") ");
+#elif JSON_DIAGNOSTIC_POSITIONS
+        auto str = "byte " + std::to_string(leaf_element->start_pos()) + "-" + std::to_string(leaf_element->end_pos());
         return concat('(', str, ") ");
 #else
         static_cast<void>(leaf_element);

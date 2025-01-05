@@ -48,3 +48,4 @@ Original string:
 Parsed string: 
 1
 
+[json.exception.type_error.302] (byte 92-95) type must be number, but is string
