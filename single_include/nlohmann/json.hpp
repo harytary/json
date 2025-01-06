@@ -4535,13 +4535,13 @@ class exception : public std::exception
         });
 #if JSON_DIAGNOSTIC_POSITIONS
         str += ((leaf_element->start_pos() == std::string::npos) || (leaf_element->end_pos() == std::string::npos)) ? "" :
-               ", byte " + std::to_string(leaf_element->start_pos()) + "-" + std::to_string(leaf_element->end_pos());
+               '(' + "byte " + std::to_string(leaf_element->start_pos()) + "-" + std::to_string(leaf_element->end_pos()) + ')';
 #endif
-        return concat('(', str, ") ");
+        return str;
 #elif JSON_DIAGNOSTIC_POSITIONS
         auto str = ((leaf_element->start_pos() == std::string::npos) || (leaf_element->end_pos() == std::string::npos)) ? "" :
-                   "byte " + std::to_string(leaf_element->start_pos()) + "-" + std::to_string(leaf_element->end_pos());
-        return concat('(', str, ") ");
+                   '(' + "byte " + std::to_string(leaf_element->start_pos()) + "-" + std::to_string(leaf_element->end_pos()) + ')';
+        return str;
 #else
         static_cast<void>(leaf_element);
         return "";

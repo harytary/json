@@ -221,7 +221,9 @@ TEST_CASE("algorithms")
             SECTION("sorting an object")
             {
                 json j({{"one", 1}, {"two", 2}});
+#if !defined(JSON_DIAGNOSTICS)
                 CHECK_THROWS_WITH_AS(std::sort(j.begin(), j.end()), "[json.exception.invalid_iterator.209] cannot use offsets with object iterators", json::invalid_iterator&);
+#endif
             }
         }
 

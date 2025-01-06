@@ -60,7 +60,11 @@ TEST_CASE("JSON patch")
             json const doc2 = R"({ "q": { "bar": 2 } })"_json;
 
             // because "a" does not exist.
+#if defined(JSON_DIAGNOSTIC_POSITIONS)
+            CHECK_THROWS_WITH_AS(doc2.patch(patch1), "[json.exception.out_of_range.403] (byte 0-21) key 'a' not found", json::out_of_range&);
+#else
             CHECK_THROWS_WITH_AS(doc2.patch(patch1), "[json.exception.out_of_range.403] key 'a' not found", json::out_of_range&);
+#endif
 
             json const doc3 = R"({ "a": {} })"_json;
             json const patch2 = R"([{ "op": "add", "path": "/a/b/c", "value": 1 }])"_json;
@@ -68,6 +72,8 @@ TEST_CASE("JSON patch")
             // should cause an error because "b" does not exist in doc3
 #if JSON_DIAGNOSTICS
             CHECK_THROWS_WITH_AS(doc3.patch(patch2), "[json.exception.out_of_range.403] (/a) key 'b' not found", json::out_of_range&);
+#elif defined(JSON_DIAGNOSTIC_POSITIONS)
+            CHECK_THROWS_WITH_AS(doc3.patch(patch2), "[json.exception.out_of_range.403] (byte 7-9) key 'b' not found", json::out_of_range&);
 #else
             CHECK_THROWS_WITH_AS(doc3.patch(patch2), "[json.exception.out_of_range.403] key 'b' not found", json::out_of_range&);
 #endif
@@ -333,6 +339,8 @@ TEST_CASE("JSON patch")
             CHECK_THROWS_AS(doc.patch(patch), json::other_error&);
 #if JSON_DIAGNOSTICS
             CHECK_THROWS_WITH_STD_STR(doc.patch(patch), "[json.exception.other_error.501] (/0) unsuccessful: " + patch[0].dump());
+#elif defined(JSON_DIAGNOSTIC_POSITIONS)
+            CHECK_THROWS_WITH_STD_STR(doc.patch(patch), "[json.exception.other_error.501] (byte 47-95) unsuccessful: " + patch[0].dump());
 #else
             CHECK_THROWS_WITH_STD_STR(doc.patch(patch), "[json.exception.other_error.501] unsuccessful: " + patch[0].dump());
 #endif
@@ -418,7 +426,11 @@ TEST_CASE("JSON patch")
             // references neither the root of the document, nor a member of
             // an existing object, nor a member of an existing array.
 
+#if defined(JSON_DIAGNOSTIC_POSITIONS)
+            CHECK_THROWS_WITH_AS(doc.patch(patch), "[json.exception.out_of_range.403] (byte 21-37) key 'baz' not found", json::out_of_range&);
+#else
             CHECK_THROWS_WITH_AS(doc.patch(patch), "[json.exception.out_of_range.403] key 'baz' not found", json::out_of_range&);
+#endif
         }
 
         // A.13. Invalid JSON Patch Document
@@ -476,6 +488,8 @@ TEST_CASE("JSON patch")
             CHECK_THROWS_AS(doc.patch(patch), json::other_error&);
 #if JSON_DIAGNOSTICS
             CHECK_THROWS_WITH_STD_STR(doc.patch(patch), "[json.exception.other_error.501] (/0) unsuccessful: " + patch[0].dump());
+#elif defined(JSON_DIAGNOSTIC_POSITIONS)
+            CHECK_THROWS_WITH_STD_STR(doc.patch(patch), "[json.exception.other_error.501] (byte 47-95) unsuccessful: " + patch[0].dump());
 #else
             CHECK_THROWS_WITH_STD_STR(doc.patch(patch), "[json.exception.other_error.501] unsuccessful: " + patch[0].dump());
 #endif
@@ -1205,6 +1219,8 @@ TEST_CASE("JSON patch")
                 CHECK_THROWS_AS(doc.patch(patch), json::other_error&);
 #if JSON_DIAGNOSTICS
                 CHECK_THROWS_WITH_STD_STR(doc.patch(patch), "[json.exception.other_error.501] (/0) unsuccessful: " + patch[0].dump());
+#elif defined(JSON_DIAGNOSTIC_POSITIONS)
+                CHECK_THROWS_WITH_STD_STR(doc.patch(patch), "[json.exception.other_error.501] (byte 47-117) unsuccessful: " + patch[0].dump());
 #else
                 CHECK_THROWS_WITH_STD_STR(doc.patch(patch), "[json.exception.other_error.501] unsuccessful: " + patch[0].dump());
 #endif
