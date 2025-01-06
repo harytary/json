@@ -131,14 +131,19 @@ class exception : public std::exception
             return concat(a, '/', detail::escape(b));
         });
 #if JSON_DIAGNOSTIC_POSITIONS
-        str += ((leaf_element->start_pos() == std::string::npos) || (leaf_element->end_pos() == std::string::npos)) ? "" :
-               '(' + "byte " + std::to_string(leaf_element->start_pos()) + "-" + std::to_string(leaf_element->end_pos()) + ')';
+        if ((leaf_element->start_pos() != std::string::npos) && (leaf_element->end_pos() != std::string::npos))
+        {
+            str += ", byte " + std::to_string(leaf_element->start_pos()) + "-" + std::to_string(leaf_element->end_pos());
+            return concat('(', str, ") ");
+        }
 #endif
-        return str;
 #elif JSON_DIAGNOSTIC_POSITIONS
-        auto str = ((leaf_element->start_pos() == std::string::npos) || (leaf_element->end_pos() == std::string::npos)) ? "" :
-                   '(' + "byte " + std::to_string(leaf_element->start_pos()) + "-" + std::to_string(leaf_element->end_pos()) + ')';
-        return str;
+        if ((leaf_element->start_pos() != std::string::npos) && (leaf_element->end_pos() != std::string::npos))
+        {
+            auto str = concat("byte ", std::to_string(leaf_element->start_pos()), "-", std::to_string(leaf_element->end_pos()));
+            return concat('(', str, ") ");
+        }
+        return "";
 #else
         static_cast<void>(leaf_element);
         return "";
