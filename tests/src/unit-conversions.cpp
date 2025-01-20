@@ -1657,16 +1657,7 @@ TEST_CASE("JSON to enum mapping")
     }
 }
 
-#ifdef __cpp_exceptions
-    #undef __cpp_exceptions
-    #define __cpp_exceptions 1
-#endif
-
-#ifdef JSON_NOEXCEPTION
-    #define JSON_NOEXCEPTION 0
-#endif
-
-#if (defined(__cpp_exceptions) || defined(__EXCEPTIONS) || defined(_CPPUNWIND)) && !defined(JSON_NOEXCEPTION)
+#if !defined(JSON_NOEXCEPTION) && !defined(JSON_THROW_USER) && !defined(JSON_THROW)
     #define JSON_THROW(exception) throw exception
 #else
     #include <cstdlib>
@@ -1738,6 +1729,9 @@ TEST_CASE("JSON to enum mapping")
         CHECK_THROWS_WITH_AS(j.template get<TaskStateStrict>(), "[json.exception.type_error.302] can't deserialize - invalid json value : \"foo\"", json::type_error);
     }
 }
+#if defined(JSON_THROW)
+    #undef JSON_THROW
+#endif
 
 #ifdef JSON_HAS_CPP_17
 #ifndef JSON_USE_IMPLICIT_CONVERSIONS
