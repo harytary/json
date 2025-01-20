@@ -15239,7 +15239,9 @@ class json_pointer
                     // iterate array and use index as reference string
                     for (std::size_t i = 0; i < value.m_data.m_value.array->size(); ++i)
                     {
-                        flatten(detail::concat(reference_string, '/', std::to_string(i)),
+                        // Convert std::string to string_t before passing to flatten
+                        auto concat_result = detail::concat(reference_string, '/', std::to_string(i));
+                        flatten(string_t(concat_result.c_str()),
                                 value.m_data.m_value.array->operator[](i), result);
                     }
                 }
@@ -15258,7 +15260,9 @@ class json_pointer
                     // iterate object and use keys as reference string
                     for (const auto& element : *value.m_data.m_value.object)
                     {
-                        flatten(detail::concat(reference_string, '/', detail::escape(element.first)), element.second, result);
+                        // Convert std::string to string_t before passing to flatten
+                        auto concat_result = detail::concat(reference_string, '/', detail::escape(element.first));
+                        flatten(string_t(concat_result.c_str()), element.second, result);
                     }
                 }
                 break;
