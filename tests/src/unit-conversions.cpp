@@ -1668,15 +1668,9 @@ TEST_CASE("JSON to enum mapping")
 
 #if (defined(__cpp_exceptions) || defined(__EXCEPTIONS) || defined(_CPPUNWIND)) && !defined(JSON_NOEXCEPTION)
     #define JSON_THROW(exception) throw exception
-    #define JSON_TRY try
-    #define JSON_CATCH(exception) catch(exception)
-    #define JSON_INTERNAL_CATCH(exception) catch(exception)
 #else
     #include <cstdlib>
     #define JSON_THROW(exception) std::abort()
-    #define JSON_TRY if(true)
-    #define JSON_CATCH(exception) if(false)
-    #define JSON_INTERNAL_CATCH(exception) if(false)
 #endif
 
 enum class cards_strict {kreuz, pik, herz, karo};
