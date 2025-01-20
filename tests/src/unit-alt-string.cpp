@@ -362,7 +362,9 @@ TEST_CASE("alternative string type")
 
     SECTION("flatten")
     {
-        alt_json j = alt_json::parse(R"({"foo": ["bar", "baz"]})");
-        auto j2 = j.flatten();
+        // a JSON value
+        const alt_json j = alt_json::parse(R"({"foo": ["bar", "baz"]})");
+        const auto j2 = j.flatten();
+        CHECK(j2.dump() == R"({"/foo/0":"bar","/foo/1":"baz"})");
     }
 }
