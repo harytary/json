@@ -90,4 +90,4 @@ Both examples demonstrate:
 
 ## Version history
 
-- Added in version 3.11.3.
+- Added in version 3.11.4

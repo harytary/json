@@ -26,7 +26,7 @@ NLOHMANN_JSON_SERIALIZE_ENUM( TaskState, {
 
 The [`NLOHMANN_JSON_SERIALIZE_ENUM()` macro](../api/macros/nlohmann_json_serialize_enum.md) declares a set of
 `to_json()` / `from_json()` functions for type `TaskState` while avoiding repetition and boilerplate serialization code.
-   
+
 ## Usage
 
 ```cpp

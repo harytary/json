@@ -244,8 +244,8 @@
 
 /*!
 @brief macro to briefly define a mapping between an enum and JSON
-@def NLOHMANN_JSON_SERIALIZE_ENUM
-@since version 3.4.0
+@def NLOHMANN_JSON_SERIALIZE_ENUM_STRICT
+@since version 3.11.4
 */
 #define NLOHMANN_JSON_SERIALIZE_ENUM_STRICT(ENUM_TYPE, ...)                                            \
     template<typename BasicJsonType>                                                            \
