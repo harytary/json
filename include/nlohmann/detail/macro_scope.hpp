@@ -17,6 +17,34 @@
 
 #include <nlohmann/detail/abi_macros.hpp>
 
+NLOHMANN_JSON_NAMESPACE_BEGIN
+namespace detail
+{
+template<typename T>
+[[noreturn]] inline void throw_if_exceptions_enabled(T&& exception)
+{
+#if defined(__cpp_exceptions) || defined(__EXCEPTIONS) || defined(_CPPUNWIND) || defined(EXCEPTIONS)
+    throw std::forward<T>(exception);
+#else
+    std::abort();
+#endif
+}
+} // namespace detail
+NLOHMANN_JSON_NAMESPACE_END
+
+// exclude unsupported compilers
+#if !defined(JSON_SKIP_UNSUPPORTED_COMPILER_CHECK)
+    #if defined(__clang__)
+        #if (__clang_major__ * 10000 + __clang_minor__ * 100 + __clang_patchlevel__) < 30400
+            #error "unsupported Clang version - see https://github.com/nlohmann/json#supported-compilers"
+        #endif
+    #elif defined(__GNUC__) && !(defined(__ICC) || defined(__INTEL_COMPILER))
+        #if (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__) < 40800
+            #error "unsupported GCC version - see https://github.com/nlohmann/json#supported-compilers"
+        #endif
+    #endif
+#endif
+
 // exclude unsupported compilers
 #if !defined(JSON_SKIP_UNSUPPORTED_COMPILER_CHECK)
     #if defined(__clang__)
@@ -262,7 +290,7 @@
         });                                                                                     \
         if (it == std::end(m)) { \
             auto value = static_cast<typename std::underlying_type<ENUM_TYPE>::type>(e); \
-            JSON_THROW(nlohmann::detail::type_error::create(302, nlohmann::detail::concat("can't serialize - enum value ", std::to_string(value), " out of range"), &j)); \
+            nlohmann::detail::throw_if_exceptions_enabled(nlohmann::detail::type_error::create(302, nlohmann::detail::concat("can't serialize - enum value ", std::to_string(value), " out of range"), &j)); \
         } \
         j = it->second; \
     }                                                                                           \
@@ -279,7 +307,7 @@
             return ej_pair.second == j;                                                         \
         });                                                                                     \
         if (it == std::end(m))            \
-            JSON_THROW(nlohmann::detail::type_error::create(302, nlohmann::detail::concat("can't deserialize - invalid json value : ", j.dump()), &j)); \
+            nlohmann::detail::throw_if_exceptions_enabled(nlohmann::detail::type_error::create(302, nlohmann::detail::concat("can't deserialize - invalid json value : ", j.dump()), &j)); \
         e = it->first; \
     }
 

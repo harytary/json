@@ -1657,13 +1657,6 @@ TEST_CASE("JSON to enum mapping")
     }
 }
 
-#if !defined(JSON_NOEXCEPTION) && !defined(JSON_THROW_USER) && !defined(JSON_THROW)
-    #define JSON_THROW(exception) throw exception
-#else
-    #include <cstdlib>
-    #define JSON_THROW(exception) std::abort()
-#endif
-
 enum class cards_strict {kreuz, pik, herz, karo};
 
 // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays,hicpp-avoid-c-arrays,modernize-avoid-c-arrays) - false positive
@@ -1729,9 +1722,6 @@ TEST_CASE("JSON to enum mapping")
         CHECK_THROWS_WITH_AS(j.template get<TaskStateStrict>(), "[json.exception.type_error.302] can't deserialize - invalid json value : \"foo\"", json::type_error);
     }
 }
-#if defined(JSON_THROW)
-    #undef JSON_THROW
-#endif
 
 #ifdef JSON_HAS_CPP_17
 #ifndef JSON_USE_IMPLICIT_CONVERSIONS
