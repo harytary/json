@@ -2392,6 +2392,7 @@ template<typename T>
 #if defined(__cpp_exceptions) || defined(__EXCEPTIONS) || defined(_CPPUNWIND) || defined(EXCEPTIONS)
     throw std::forward<T>(exception);
 #else
+    (void)exception;
     std::abort();
 #endif
 }
