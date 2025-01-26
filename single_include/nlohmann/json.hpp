@@ -2383,22 +2383,6 @@ JSON_HEDLEY_DIAGNOSTIC_POP
 // #include <nlohmann/detail/abi_macros.hpp>
 
 
-NLOHMANN_JSON_NAMESPACE_BEGIN
-namespace detail
-{
-template<typename T>
-[[noreturn]] inline void throw_if_exceptions_enabled(T&& exception)
-{
-#if defined(__cpp_exceptions) || defined(__EXCEPTIONS) || defined(_CPPUNWIND) || defined(EXCEPTIONS)
-    throw std::forward<T>(exception);
-#else
-    // Forward the exception (even if unused) and abort
-    std::forward<T>(exception);
-    std::abort();
-#endif
-}
-} // namespace detail
-NLOHMANN_JSON_NAMESPACE_END
 
 // exclude unsupported compilers
 #if !defined(JSON_SKIP_UNSUPPORTED_COMPILER_CHECK)
@@ -2638,6 +2622,17 @@ NLOHMANN_JSON_NAMESPACE_END
         e = ((it != std::end(m)) ? it : std::begin(m))->first;                                  \
     }
 
+NLOHMANN_JSON_NAMESPACE_BEGIN
+namespace detail
+{
+template<typename T>
+[[noreturn]] inline void json_throw_from_serialize_macro(T&& exception)
+{
+    static_cast<void>(exception);
+    JSON_THROW(std::forward<T>(exception));
+}
+} // namespace detail
+NLOHMANN_JSON_NAMESPACE_END
 /*!
 @brief macro to briefly define a mapping between an enum and JSON
 @def NLOHMANN_JSON_SERIALIZE_ENUM_STRICT
@@ -2658,7 +2653,7 @@ NLOHMANN_JSON_NAMESPACE_END
         });                                                                                     \
         if (it == std::end(m)) { \
             auto value = static_cast<typename std::underlying_type<ENUM_TYPE>::type>(e); \
-            nlohmann::detail::throw_if_exceptions_enabled(nlohmann::detail::type_error::create(302, nlohmann::detail::concat("can't serialize - enum value ", std::to_string(value), " out of range"), &j)); \
+            nlohmann::detail::json_throw_from_serialize_macro(nlohmann::detail::type_error::create(302, nlohmann::detail::concat("can't serialize - enum value ", std::to_string(value), " out of range"), &j)); \
         } \
         j = it->second; \
     }                                                                                           \
@@ -2675,7 +2670,7 @@ NLOHMANN_JSON_NAMESPACE_END
             return ej_pair.second == j;                                                         \
         });                                                                                     \
         if (it == std::end(m))            \
-            nlohmann::detail::throw_if_exceptions_enabled(nlohmann::detail::type_error::create(302, nlohmann::detail::concat("can't deserialize - invalid json value : ", j.dump()), &j)); \
+            nlohmann::detail::json_throw_from_serialize_macro(nlohmann::detail::type_error::create(302, nlohmann::detail::concat("can't deserialize - invalid json value : ", j.dump()), &j)); \
         e = it->first; \
     }
 
