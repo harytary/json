@@ -60,7 +60,7 @@ Other Important points:
   map will be returned when converting to or from JSON.
 - To disable the default serialization of enumerators as integers and force a compiler error instead, see [`JSON_DISABLE_ENUM_SERIALIZATION`](../api/macros/json_disable_enum_serialization.md).
 
-An alternative macro [`NLOHMANN_JSON_SERIALIZE_ENUM_STRICT()` macro](../api/macros/nlohmann_json_serialize_enum.md) can be used when a more strict error handling is preffered, throwing in case of serialization errors instead of defaulting to the first enum value defined in the macro.
+An alternative macro [`NLOHMANN_JSON_SERIALIZE_ENUM_STRICT()` macro](../api/macros/nlohmann_json_serialize_enum.md) can be used when a more strict error handling is preferred, throwing in case of serialization errors instead of defaulting to the first enum value defined in the macro.
 
 ## Usage
 ```cpp

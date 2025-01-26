@@ -2383,20 +2383,6 @@ JSON_HEDLEY_DIAGNOSTIC_POP
 // #include <nlohmann/detail/abi_macros.hpp>
 
 
-
-// exclude unsupported compilers
-#if !defined(JSON_SKIP_UNSUPPORTED_COMPILER_CHECK)
-    #if defined(__clang__)
-        #if (__clang_major__ * 10000 + __clang_minor__ * 100 + __clang_patchlevel__) < 30400
-            #error "unsupported Clang version - see https://github.com/nlohmann/json#supported-compilers"
-        #endif
-    #elif defined(__GNUC__) && !(defined(__ICC) || defined(__INTEL_COMPILER))
-        #if (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__) < 40800
-            #error "unsupported GCC version - see https://github.com/nlohmann/json#supported-compilers"
-        #endif
-    #endif
-#endif
-
 // exclude unsupported compilers
 #if !defined(JSON_SKIP_UNSUPPORTED_COMPILER_CHECK)
     #if defined(__clang__)
@@ -2548,6 +2534,7 @@ JSON_HEDLEY_DIAGNOSTIC_POP
     #define JSON_INTERNAL_CATCH(exception) catch(exception)
 #else
     #include <cstdlib>
+    std::forward<T>(exception);
     #define JSON_THROW(exception) std::abort()
     #define JSON_TRY if(true)
     #define JSON_CATCH(exception) if(false)
@@ -2628,7 +2615,6 @@ namespace detail
 template<typename T>
 [[noreturn]] inline void json_throw_from_serialize_macro(T&& exception)
 {
-    static_cast<void>(exception);
     JSON_THROW(std::forward<T>(exception));
 }
 } // namespace detail
