@@ -1,13 +1,6 @@
 #include <iostream>
 #include <nlohmann/json.hpp>
 
-#if !defined(JSON_NOEXCEPTION) && !defined(JSON_THROW_USER) && !defined(JSON_THROW)
-    #define JSON_THROW(exception) throw exception
-#else
-    #include <cstdlib>
-    #define JSON_THROW(exception) std::abort()
-#endif
-
 using json = nlohmann::json;
 
 namespace ns

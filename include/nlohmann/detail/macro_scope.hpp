@@ -168,7 +168,6 @@
     #define JSON_INTERNAL_CATCH(exception) catch(exception)
 #else
     #include <cstdlib>
-    std::forward<T>(exception);
     #define JSON_THROW(exception) std::abort()
     #define JSON_TRY if(true)
     #define JSON_CATCH(exception) if(false)
@@ -249,7 +248,13 @@ namespace detail
 template<typename T>
 [[noreturn]] inline void json_throw_from_serialize_macro(T&& exception)
 {
-    JSON_THROW(std::forward<T>(exception));
+#if defined(__cpp_exceptions) || defined(__EXCEPTIONS) || defined(_CPPUNWIND) || defined(EXCEPTIONS)
+    throw std::forward<T>(exception);
+#else
+    // Forward the exception (even if unused) and abort
+    std::forward<T>(exception);
+    std::abort();
+#endif
 }
 } // namespace detail
 NLOHMANN_JSON_NAMESPACE_END
