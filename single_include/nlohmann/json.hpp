@@ -2614,7 +2614,7 @@ namespace detail
 template<typename T>
 [[noreturn]] inline void json_throw_from_serialize_macro(T&& exception)
 {
-#if defined(__cpp_exceptions) || defined(__EXCEPTIONS) || defined(_CPPUNWIND) || defined(EXCEPTIONS)
+#if (defined(__cpp_exceptions) || defined(__EXCEPTIONS) || defined(_CPPUNWIND)) && !defined(JSON_NOEXCEPTION)
     throw std::forward<T>(exception);
 #else
     // Forward the exception (even if unused) and abort
@@ -2644,7 +2644,7 @@ NLOHMANN_JSON_NAMESPACE_END
         });                                                                                     \
         if (it == std::end(m)) { \
             auto value = static_cast<typename std::underlying_type<ENUM_TYPE>::type>(e); \
-            nlohmann::detail::json_throw_from_serialize_macro(nlohmann::detail::type_error::create(302, nlohmann::detail::concat("can't serialize - enum value ", std::to_string(value), " out of range"), &j)); \
+            nlohmann::detail::json_throw_from_serialize_macro(nlohmann::detail::type_error::create(302, nlohmann::detail::concat("serialization failed: enum value ", std::to_string(value), " is out of range"), &j)); \
         } \
         j = it->second; \
     }                                                                                           \
@@ -2661,7 +2661,7 @@ NLOHMANN_JSON_NAMESPACE_END
             return ej_pair.second == j;                                                         \
         });                                                                                     \
         if (it == std::end(m))            \
-            nlohmann::detail::json_throw_from_serialize_macro(nlohmann::detail::type_error::create(302, nlohmann::detail::concat("can't deserialize - invalid json value : ", j.dump()), &j)); \
+            nlohmann::detail::json_throw_from_serialize_macro(nlohmann::detail::type_error::create(302, nlohmann::detail::concat("deserialization failed: invalid JSON value ", j.dump()), &j)); \
         e = it->first; \
     }
 

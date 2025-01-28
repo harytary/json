@@ -59,7 +59,7 @@ inline void from_json(const BasicJsonType& j, type& e);
     Expected output:
     
     ```
-    [json.exception.type_error.302] can't serialize - enum value 3 out of range
+    [json.exception.type_error.302] serialization failed: enum value 3 is out of range
     ```
 
 ??? example "Example 2: Strict deserialization"
@@ -73,7 +73,7 @@ inline void from_json(const BasicJsonType& j, type& e);
     Expected output:
     
     ```
-    [json.exception.type_error.302] can't deserialize - invalid json value : "yellow"
+    [json.exception.type_error.302] deserialization failed: invalid JSON value "yellow"
     ```
 
 Both examples demonstrate:

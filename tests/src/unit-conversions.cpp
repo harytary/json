@@ -1702,7 +1702,7 @@ TEST_CASE("JSON to enum mapping")
 
         // invalid json
         const json j = "foo";
-        CHECK_THROWS_WITH_AS(j.template get<cards_strict>(), "[json.exception.type_error.302] can't deserialize - invalid json value : \"foo\"", json::type_error);
+        CHECK_THROWS_WITH_AS(j.template get<cards_strict>(), "[json.exception.type_error.302] deserialization failed: invalid JSON value \"foo\"", json::type_error);
     }
 
     SECTION("traditional enum")
@@ -1719,7 +1719,7 @@ TEST_CASE("JSON to enum mapping")
 
         // invalid json
         const json j = "foo";
-        CHECK_THROWS_WITH_AS(j.template get<TaskStateStrict>(), "[json.exception.type_error.302] can't deserialize - invalid json value : \"foo\"", json::type_error);
+        CHECK_THROWS_WITH_AS(j.template get<TaskStateStrict>(), "[json.exception.type_error.302] deserialization failed: invalid JSON value \"foo\"", json::type_error);
     }
 }
 

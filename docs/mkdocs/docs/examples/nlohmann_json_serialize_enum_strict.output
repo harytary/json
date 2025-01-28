@@ -1,1 +1,1 @@
-[json.exception.type_error.302] can't serialize - enum value 3 out of range
+[json.exception.type_error.302] serialization failed: enum value 3 is out of range
