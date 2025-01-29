@@ -1,1 +1,1 @@
-[json.exception.type_error.302] can't deserialize - invalid json value : "yellow"
+[json.exception.type_error.302] deserialization failed: invalid JSON value "yellow"

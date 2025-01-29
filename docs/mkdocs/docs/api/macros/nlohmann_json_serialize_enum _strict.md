@@ -4,7 +4,7 @@
 #define NLOHMANN_JSON_SERIALIZE_ENUM_STRICT(type, conversion...)
 ```
 
-The `NLOHMANN_JSON_SERIALIZE_ENUM_STRICT` allows to define a user-defined serialization for every enumerator.
+The `NLOHMANN_JSON_SERIALIZE_ENUM_STRICT` macro allows defining a user-defined serialization for every enumerator.
 
 This macro declares strict serialization and deserialization functions (`to_json` and `from_json`) for an enum type. 
 Unlike [`NLOHMANN_JSON_SERIALIZE_ENUM`](nlohmann_json_serialize_enum.md), this macro enforces strict validation and 
@@ -16,7 +16,7 @@ throws errors for unmapped values instead of defaulting to the first enum value.
 :   name of the enum to serialize/deserialize
 
 `conversion` (in)
-:   a pair of an enumerator and a JSON serialization; arbitrary pairs can be given as a comma-separated list
+:   A list of parameters alternating between an enumerator value and a string to use in the JSON serialization.
 
 ## Default definition
 
@@ -37,10 +37,9 @@ inline void from_json(const BasicJsonType& j, type& e);
 
 !!! important "Important notes"
 
-    - If an enum value appears more than once in the mapping, only the first occurrence will be used for serialization, 
-        subsequent mappings for the same enum value will be ignored.
-    - If a JSON value appears more than once in the mapping, only the first occurrence will be used for deserialization, 
-        subsequent mappings for the same JSON value will be ignored.
+    - Duplicate enum or JSON values in the mapping are not supported. Only the first occurrence will be used, 
+    and subsequent mappings will be ignored. 
+    This behavior is currently tolerated but may become an error in future versions.
     - Unlike `NLOHMANN_JSON_SERIALIZE_ENUM`, this macro enforces strict validation:
         - Attempting to serialize an unmapped enum value will throw a `type_error.302` exception
         - Attempting to deserialize an unmapped JSON value will throw a `type_error.302` exception
