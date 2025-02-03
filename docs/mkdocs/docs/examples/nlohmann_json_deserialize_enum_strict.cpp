@@ -20,9 +20,8 @@ NLOHMANN_JSON_SERIALIZE_ENUM_STRICT(Color,
 
 int main()
 {
-
-    // deserialization
     json j_yellow = "yellow";
+    // deserialization
     try
     {
         auto yellow = j_yellow.template get<ns::Color>();

@@ -58,6 +58,7 @@ inline void from_json(const BasicJsonType& j, type& e);
     Expected output:
     
     ```
+    --8<-- "examples/nlohmann_json_serialize_enum_strict.output"
     [json.exception.type_error.302] serialization failed: enum value 3 is out of range
     ```
 
@@ -72,6 +73,7 @@ inline void from_json(const BasicJsonType& j, type& e);
     Expected output:
     
     ```
+    --8<-- "examples/nlohmann_json_deserialize_enum_strict.output"
     [json.exception.type_error.302] deserialization failed: invalid JSON value "yellow"
     ```
 
